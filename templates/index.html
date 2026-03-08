@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Serious Game</title>
+</head>
+
+<body>
+
+<h2>Online Discussion Scenario</h2>
+
+<form action="/result" method="post">
+
+<p>{{ scenario.text }}</p>
+
+{% for choice in scenario.choices %}
+
+<button type="submit" name="choice" value="{{ choice }}">
+    {{ choice }}
+</button>
+
+<br><br>
+
+{% endfor %}
+
+</form>
+
+</body>
+</html>
