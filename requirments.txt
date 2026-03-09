@@ -1,0 +1,4 @@
+Flask
+Markdown
+openai
+python-dotenv

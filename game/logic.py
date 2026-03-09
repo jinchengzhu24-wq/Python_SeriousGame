@@ -1,40 +1,39 @@
-def process_choice(choices):
+from game.scenario import scenarios
+from game.feedback import generate_feedback, generate_summary
 
-    score = 0
+class GameLogic:
 
-    negative = [
-        "Reply angrily",
-        "Respond with insults",
-        "Respond sarcastically"
-    ]
+    def __init__(self):
+        self.reset()
 
-    neutral = [
-        "Ignore the comment",
-        "Ignore and move on",
-        "Stop responding"
-    ]
+    def reset(self):
+        self.current_index = 0
+        self.history = []
 
-    positive = [
-        "Explain calmly",
-        "Ask what they mean",
-        "Explain your idea politely"
-    ]
+    def get_current_scenario(self):
+        if self.current_index < len(scenarios):
+            return scenarios[self.current_index]
+        return None
 
+    def process_choice(self, choice):
+        if self.is_game_finished():
+            return None
 
-    for choice in choices:
+        scenario = scenarios[self.current_index]["question"]
 
-        if choice in negative:
-            score -= 1
+        feedback = generate_feedback(scenario, choice)
 
-        elif choice in positive:
-            score += 1
+        self.history.append({
+            "scenario": scenario,
+            "choice": choice
+        })
 
+        self.current_index += 1
 
-    if score <= -2:
-        return "Your responses may escalate online conflict."
+        return feedback
 
-    elif score == 0:
-        return "Your responses are neutral."
+    def is_game_finished(self):
+        return self.current_index >= len(scenarios)
 
-    else:
-        return "Your responses show constructive communication."
+    def get_summary(self):
+        return generate_summary(self.history)
